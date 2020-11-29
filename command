@@ -105,3 +105,48 @@
   776  git fetch 
   777  history 
 [root@instance-5 starter-workflows]# 
+
+
+  207  touch 12 13 45 
+  208  ls -l
+  209  docker exec -it 0e99 /bin/bash
+  210  docker ps
+  211  docker stop 0e99324d642a ; docker rm 0e99324d642a
+  212  ls -l
+  213  ps -ef | grep -i docker
+  214  docker run -it -d --name cont1 ubuntu
+  215  docker run -it -d --link cont1 --name cont2 ubuntu
+  216  docker exec -it 0525 /bin/bash
+  217  docker version
+  218  date
+  219  ifconfig
+  220  docker swarm init --advertise-addr=10.128.0.22
+  221  docker node ls
+  222  docker swarm join worker
+  223  docker swarm join-token worker
+  224  docker node ls
+  225  docker swarm
+  226  docker swarm info
+  227  docker info
+  228  docker node ls
+  229  docker service create --name nginx --replicas 5 -p 8090:80  nginx
+  230  docker service ls
+  231  docker service ps nginx
+  232  docker node ls
+  233  docker service ps nginx
+  234  docker service scale nginx=8
+  235  docker service ps nginx
+  236  docker service scale nginx=4
+  237  docker service ps nginx
+  238  docker node ps dw1
+  239  docker node ps dw2
+  240  docker node ps dm
+  241  docker node inspect dw1
+  242  docker node inspect dw2
+  243  docker service update --image=nginx:stable-perl nginx
+  244  docker service ps nginx
+  245  docker service inspect nginx
+  246  docker service rollback nginx
+  247  docker service ps nginx
+  248  docker service logs nginx
+  249  docker service rollback --help
