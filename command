@@ -150,3 +150,10 @@
   247  docker service ps nginx
   248  docker service logs nginx
   249  docker service rollback --help
+  
+  
+  root@dm:~# docker swarm join-token worker
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-66gg0n3ecac8950fgregap05iq89cq361ib8mj1ytlfkryhemn-574sjinziyfg4of1mjo0g7d67 10.128.0.22:2377
+
