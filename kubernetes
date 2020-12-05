@@ -1,0 +1,38 @@
+MASTER SETUP
+
+sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs)  stable"
+sudo apt-get remove docker docker-engine docker.io containerd runc
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial  main"
+sudo apt-get install -y kubelet kubeadm kubectl
+kubeadm version
+kubeadm init --pod-network-cidr=10.244.0.0/16 --- by running this command u will get kubeadm join command to join slave node
+
+kubectl cluster-info
+mkdir -p $HOME/.kube
+cat /root/.kube/config 
+netstat -tunlp
+kubectl cluster-info
+kubectl get node
+kubectl get pods
+kubectl get namespace
+kubectl get pods -n kube-system
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl get pods -n kube-system
+kubectl get node
+
+SLAVE SETUP
+sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs)  stable"
+sudo apt-get remove docker docker-engine docker.io containerd runc
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial  main"
+sudo apt-get install -y kubelet kubeadm kubectl
+kubeadm join 10.128.0.2:6443 --token i2sl8a.gffh1ycoz2o1d3ib --discovery-token-ca-cert-hash sha256:75a66b6550414ec7b2a4e16b6038b8b72f84843d181d15362fc786ac62323f17 
+
+
+ 
