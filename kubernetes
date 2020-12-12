@@ -35,5 +35,279 @@ apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial  main"
 sudo apt-get install -y kubelet kubeadm kubectl
 kubeadm join 10.128.0.2:6443 --token i2sl8a.gffh1ycoz2o1d3ib --discovery-token-ca-cert-hash sha256:75a66b6550414ec7b2a4e16b6038b8b72f84843d181d15362fc786ac62323f17 
 
-
- 
+ankushgupta2001@gmail.com
+Deployments on MasterNode
+kubectl create namespace test
+vim namespace.yml
+kubectl create -f namespace.yml 
+kubectl get namespace
+kubectl delete -f namespace.yml 
+kubectl get namespace
+vim namespace.yml 
+kubectl get pods -n kube-system
+vim pv.yml
+mkdir /data
+kubectl create -f pv.yml 
+kubectl get pv
+vim pvc.yml
+kubectl create -f pvc.yml 
+kubectl get namepsace\
+kubectl get namespace
+kubectl create -f namespace.yml 
+kubectl create -f pvc.yml 
+kubectl get pv
+vim deploy.yml
+deploy.yml 
+kubectl create -f deploy.yml 
+ kubectl get deployments
+ kubectl get deployments -n demo
+kubectl get pods -n demo
+ kubectl get pods -n demo -o wide
+kubectl delete pod nginx-5754b55b55-x4h6z -n demo
+kubectl get pods -n demo -o wide
+vim deploy.yml 
+ kubectl apply -f deploy.yml 
+kubectl get pods -n demo -o wide
+kubectl describe deployment nginx -n demo
+kubectl get pods -n demo -o wide
+kubectl describe pods  nginx-5754b55b55-l6gdp -n demo
+vim service.yml 
+kubectl create -f service.yml 
+vim service.yml 
+kubectl create -f service.yml 
+kubectl get service -n demo
+kubectl get pods -n demo -o wide
+  1kubectl exec nginx-5754b55b55-l6gdp -n demo -- /bin/bash
+  kubectl -n demo exec nginx-5754b55b55-l6gdp  -- /bin/bash
+   kubectl -n demo exec -it  nginx-5754b55b55-l6gdp  -- /bin/bash
+   kubectl get pods -n demo -o wide
+  kubectl delete pod nginx-5754b55b55-l6gdp -n demo
+  kubectl get pods -n demo -o wide
+ vim deploy.yml 
+   kubectl apply -f deploy.yml 
+    kubectl get pods -n demo -o wide
+   kubectl create  -f deploy.yml 
+ kubectl edit deployment nginx -n demo
+kubectl get pods -n demo -o wide
+ kubectl get pods 
+ kubectl get pods -n demo 
+ kubectl --help
+kubectl get --help
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
+kubectl get pods -n kube-system
+vim admin.yml
+kubectl create -f admin.yml 
+kubectl edit svc kubernetes-dashboard  -n kube-system
+kubectl get svc -n kube-system
+kubectl get pods -n kube-system -o wide
+kubectl get secret -n kube-system
+kubectl -n kube-system describe secret admin-user-token-wptqt
+kubectl get pods -n kube-system -o wide
+kubectl delete pod kubernetes-dashboard-6ff6454fdc-bf2bh -n kube-system
+kubectl get pods -n kube-system -o wide
+  
+   kubectl describe deployment nginx -n demo
+   kubectl edit deployment nginx -n demo
+cat pv
+cat pv.yml 
+ cat pvc.yml 
+ vi deploy.yml 
+ kubectl get pods -n ingress-nginx
+  vim ingress-service.yml
+kubectl create -f ingress-service.yml 
+kubectl get pods -n ingress-nginx -o wide
+vim nginx-ingress-rules.yml
+kubectl create 0f nginx-ingress-rules.yml 
+kubectl create -f nginx-ingress-rules.yml 
+kubectl get service -n nginx
+  kubectl get service -n demo
+  cp deploy.yml apache.yml
+  vim apache.yml 
+  kubectl create -f apache.yml 
+ kubectl get pods -n demo
+ kubectl delete deployment nginx -n demo
+ kubectl get pods -n demo
+ cp service.yml apache-service.yml
+ vim apache-service.yml 
+ kubectl create -f apache-service.yml 
+ kubectl get ing -n demo
+ kubectl delete ing nginx-ingress -n demo
+  cp nginx-ingress-rules.yml apache-ingress-rules.yml
+ vim apache-ingress-rules.yml 
+kubectl create -f apache-ingress-rules.yml 
+ kubectl delete ing nginx-ingress -n demo
+ kubectl get ing -n demo
+  vim apache-ingress-rules.yml 
+  kubectl get pods -n ingress-nginx
+ kubectl describe pod nginx-ingress-controller-54b86f8f7b-pklk8 -n ingress-nginx
+ kubectl get deployment       -n ingress-nginx
+  kubectl describe deployment nginx-ingress-controller -n ingress-nginx
+  
+  
+  root@instance-1:~# cat namespace.yml 
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo
+  labels:
+    apps: web-based
+  annotations:
+    type: demo
+    
+ root@instance-1:~# cat namespace.yml 
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo
+  labels:
+    apps: web-based
+  annotations:
+    type: demo
+root@instance-1:~# cat pv.yml 
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: myvol
+  namespace: demo
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data"
+    
+ root@instance-1:~# cat pvc.yml 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-volpvc
+  namespace: demo
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+      
+      
+ root@instance-1:~# cat deploy.yml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+  namespace: demo
+  annotations:
+    monitoring: "true"
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: nginx:stable-perl
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+        volumeMounts:
+        - name: pvc1
+          mountPath: /tmp
+      volumes:
+      - name: pvc1
+        persistentVolumeClaim:
+          claimName: my-volpvc
+          
+    root@instance-1:~# cat service.yml 
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+  namespace: demo
+spec:
+  ports:
+  - nodePort: 30400
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: nginx
+  type: NodePort
+  
+  
+root@instance-1:~# cat admin.yml 
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+  
+  
+ root@instance-1:~# cat ingress-service.yml 
+kind: Service
+apiVersion: v1
+metadata:
+  name: ingress-nginx
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+spec:
+  externalTrafficPolicy: Local
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+    - name: https
+      port: 443
+      targetPort: https
+      
+    root@instance-1:~# cat nginx-ingress-rules.yml 
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: demo
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: nginx
+          servicePort: 80
